@@ -1,0 +1,101 @@
+<?php
+// Листинг 6.4
+
+use PhpParser\Builder\Param;
+
+abstract class ParamHandler
+{
+    protected array $params = [];
+    public function __construct(protected string $source)
+    {
+        
+    }
+    public function addParam(string $key, string $val): void
+    {
+        $this->params[$key] = $val;
+    }
+    public function getAllParams(): array
+    {
+        return $this->params;
+    }
+    public static function getInstance(string $filename): ParamHandler
+    {
+        if (preg_match("/\.xml/i", $filename))
+        {
+            return new XmlParamHandler($filename);
+        }
+
+        return new TextParamHandler($filename);
+    }
+    function readParams(string $source): array
+    {
+        $params = [];
+
+        if(preg_match("/\.xml$/i", $source))
+        {
+            // Чтение XML-параметров из $source
+        }
+        else
+        {
+            // Чтение текстовых параметров из $source
+        }
+
+        return $params;
+    }
+    function writeParams(array $params, string $source): void
+    {
+        if (preg_match("/\.xml$/i", $source))
+        {
+            // Запись XML-параметров в $source
+        }
+        else
+        {
+            // Запись текстовых параметров в $source
+        }
+    }
+    abstract public function write(): void;
+    abstract public function read(): void; 
+}
+
+class XmlParamHandler extends ParamHandler
+{
+    public function write(): void
+    {
+        // Запись XML
+    }
+    public function read(): void
+    {
+        // Чтение
+    }
+}
+
+class TextParamHandler extends ParamHandler
+{
+    public function write(): void
+    {
+        // Запись текста
+    }
+    public function read(): void
+    {
+        // Чтение текста
+    }
+}
+
+// // Листинг 6.7
+// $test = ParamHandler::getInstance(__DIR__ . "/params.xml");
+// $test->addParam("key", "val1");
+// $test->addParam("key", "val1");
+// $test->addParam("key", "val1");
+// $test->write(); // Запись в формате XML
+
+
+// // Листинг 6.8 (к файлу txt)
+// $test = ParamHandler::getInstance(__DIR__."/params.txt");
+// $test->read(); // Чтение в текстовом формате
+// $params = $test->getAllParams();
+// print_r($params);
+
+// Листинг 6.11 
+// Может возвращать XmlParamHandler или TextParamHandler
+$test = ParamHandler::getInstance($file);
+$test->read(); 
